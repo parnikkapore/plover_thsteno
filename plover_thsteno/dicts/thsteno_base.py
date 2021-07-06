@@ -2,7 +2,6 @@ import re
 
 LONGEST_KEY = 1
 
-# TODO: Dead/live determination, Tone marks
 initials = {
     "ม": "ม",
     "ป": "ป",
@@ -29,62 +28,62 @@ clusters = {
     "รว": "ล"
 }
 vowels_f = {
-    "นี": "นิบ",      # นิก
-    "นู": "นุบ",      # นุก
-    "นีู": "นึบ",      # นึก
-    "นแ": "แน็บ",    # แน็ก
-    "นอ": "น็อบ",    # น็อก
-    "นแอ": "นับ",    # นัก
-    "นีแ": "เน็บ",    # เน็ก
-    "นูอ": "นบ",     # นก
-    "นีูแอ": "เนิบ",   # เนิก
-    "นีแอ": "เนียบ",  # เนียก
-    "นูแอ": "นวบ",   # นวก
-    "นีูแ": "เนือบ",   # เนือก
-    "นีูอ": "เนือบ",
+    "นี": "นิ่บ",      # นิก
+    "นู": "นุ่บ",      # นุก
+    "นีู": "นึ่บ",      # นึก
+    "นแ": "แน็่บ",    # แน็ก่
+    "นอ": "น็่อบ",    # น็อก
+    "นแอ": "นั่บ",    # นัก
+    "นีแ": "เน็่บ",    # เน็ก
+    "นูอ": "น่บ",     # นก
+    "นีูแอ": "เนิ่บ",   # เนิก
+    "นีแอ": "เนี่ยบ",  # เนียก
+    "นูแอ": "น่วบ",   # นวก
+    "นีูแ": "เนื่อบ",   # เนือก
+    "นีูอ": "เนื่อบ",
     "ล": "",       # Long vowel marker
-    "นีล": "นีบ",     # นีก
-    "นูล": "นูบ",     # นูก
-    "นีูล": "นืบ",     # นืก
-    "แล": "แนบ",   # แนก
-    "อล": "นอบ",   # นอก
-    "แอล": "นาบ",  # นาก
-    "นีแล": "เนบ",   # เนก
-    "นูอล": "โนบ",   # โนก
-    "นีูแอล": "เนอบ", # เนอก
-    "นีแอล": "เนียบ", # เนียก
-    "นูแอล": "นวบ",  # นวก
-    "นีูแล": "เนือบ",  # เนือก
-    "นีูอล": "เนือf"
+    "นีล": "นี่บ",     # นีก
+    "นูล": "นู่บ",     # นูก
+    "นีูล": "นื่บ",     # นืก
+    "แล": "แน่บ",   # แนก
+    "อล": "น่อบ",   # นอก
+    "แอล": "น่าบ",  # นาก
+    "นีแล": "เน่บ",   # เนก
+    "นูอล": "โน่บ",   # โนก
+    "นีูแอล": "เน่อบ", # เนอก
+    "นีแอล": "เนี่ยบ", # เนียก
+    "นูแอล": "น่วบ",  # นวก
+    "นีูแล": "เนื่อบ",  # เนือก
+    "นีูอล": "เนื่อบ"
 }
 vowels_nf = {
-    "นี": "นิ",      # นิ
-    "นู": "นุ",      # นุ
-    "นีู": "นึ",      # นึ
-    "แ": "แนะ",   # แนะ
-    "อ": "เนาะ",  # เนาะ
-    "แอ": "นะ",   # นะ
-    "นีแ": "เนะ",   # เนะ
-    "นูอ": "โนะ",   # โนะ
-    "นีูแอ": "เนอะ", # เนอะ
-    "นีแอ": "เนียะ", # เนียะ
-    "นูแอ": "นวะ",  # นัวะ
-    "นีูแ": "เนือะ",  # เนือะ
-    "นีูอ": "เนือะ",
+    "นี": "นิ่",      # นิ
+    "นู": "นุ่",      # นุ
+    "นีู": "นึ่",      # นึ
+    "แ": "แน่ะ",   # แนะ
+    "อ": "เน่าะ",  # เนาะ
+    "แอ": "น่ะ",   # นะ
+    "นีแ": "เน่ะ",   # เนะ
+    "นูอ": "โน่ะ",   # โนะ
+    "นีูแอ": "เน่อะ", # เนอะ
+    "นีแอ": "เนี่ยะ", # เนียะ
+    "นูแอ": "นั่วะ",  # นัวะ
+    "นีูแ": "เนื่อะ",  # เนือะ
+    "นีูอ": "เนื่อะ",
     "ล": "",      # Long vowel marker
-    "นีล": "นี",     # นี
-    "นูล": "นู",     # นู
-    "นีูล": "นื",     # นื
-    "แล": "แน",   # แน
-    "อล": "นอ",   # นอ
-    "แอล": "นา",  # นา
-    "นีแล": "เน",   # เน
-    "นูอล": "โน",   # โน
-    "นีูแอล": "เนอ", # เนอ
-    "นีแอล": "เนีย", # เนีย
-    "นูแอล": "นัว",  # นัว
-    "นีูแล": "เนือ",  # เนือ
-    "นีูอล": "เนือ"
+    "นีล": "นี่",     # นี
+    "นูล": "นู่",     # นู
+    "นีูล": "นื่",     # นื
+    "แล": "แน่",   # แน
+    "อล": "น่อ",   # นอ
+    "แอล": "น่า",  # นา
+    "นีแล": "เน่",   # เน
+    "นูอล": "โน่",   # โน
+    "นีูแอล": "เน่อ", # เนอ
+    "นีแอล": "เนี่ย", # เนีย
+    "นูแอล": "นั่ว",  # นัว
+    "นีูแล": "เนื่อ",  # เนือ
+    "นีูอล": "เนื่อ"
 }
 finals = {
     "ง":    "ง",
@@ -97,8 +96,9 @@ finals = {
     "มงวย": "ด"
 }
 vf_overrides = { # Exceptions for some irregularly written stuff
-    "นัfย": "ไน", # ตัย -> ไต
-    "นัfว": "เนา" # กัว* -> เกา
+    "นัtfย": "ไน่", # ตัย -> ไต
+    "นัtfว": "เน่า", # กัว* -> เกา
+    "นัtfม": "น่ำ"  # นัม -> นำ
 }
 
 tonekeys = {
@@ -162,9 +162,12 @@ def reformat_data_tables():
     # van Rossum is making all subroutine programmers sweat
     global vowels_f, vowels_nf, vf_overrides
     
-    vowels_f =     { k.replace("น","")  : v.replace("น","i").replace("บ","f") for (k,v) in vowels_f.items()}
-    vowels_nf =    { k.replace("น","")  : v.replace("น","i").replace("บ","f") for (k,v) in vowels_nf.items()}
-    vf_overrides = { k.replace("น","i") : v.replace("น","i").replace("บ","f") for (k,v) in vf_overrides.items()}
+    MAI_EK = "น่".replace("น","")
+    def normalize(txt): return txt.replace("น","i").replace("บ","f").replace(MAI_EK, "t")
+    
+    vowels_f =     { k.replace("น","") : normalize(v) for (k,v) in vowels_f.items()}
+    vowels_nf =    { k.replace("น","") : normalize(v) for (k,v) in vowels_nf.items()}
+    vf_overrides = { k.replace("น","i"): normalize(v) for (k,v) in vf_overrides.items()}
 reformat_data_tables()
 
 def translate(key, arr):
@@ -182,12 +185,11 @@ def lookup(key):
     
     # print("custom lookup called with " + stroke)
     
-    
     # normalise stroke from embedded number, to preceding hash format
     # src: Emily's Symbols
     if any(k in stroke for k in "1234506789"):  # if chord contains a number
         stroke = list(stroke)
-        numbers = ["O", "S", "T", "P", "H", "A", "F", "P", "L", "T"]
+        numbers = ["O", "S", "T", "P", "H", "A", "F", "P", "L", "T"] # TODO: Change this to Thai keys
         for key in range(len(stroke)):
             if stroke[key].isnumeric():
                 stroke[key] = numbers[int(stroke[key])]  # set number key to letter
@@ -261,8 +263,10 @@ def lookup(key):
         output = vf_overrides[vowel+final]
     else:
         output = vowel
-    output = output.replace("i", initial + icluster + tone, 1)
-    output = output.replace("f", final,                     1)
+    output = (output.replace("i", initial + icluster, 1)
+                    .replace("f", final,              1)
+                    .replace("t", tone,               1)
+             )
     
     return output
     
@@ -273,3 +277,4 @@ def lookup(key):
 # print(lookup(["กูแอล"])) # กัว
 # print(lookup(["กแอว"])) # เกา
 # print(lookup(["มงแอตลมว"])) # หนาบ
+# print(lookup(["มงแอสขมง"])) # นั้น
