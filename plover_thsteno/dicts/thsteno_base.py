@@ -31,7 +31,7 @@ vowels_f = {
     "นี": "นิ่บ",      # นิก
     "นู": "นุ่บ",      # นุก
     "นีู": "นึ่บ",      # นึก
-    "นแ": "แน็่บ",    # แน็ก่
+    "นแ": "แน็่บ",    # แน็ก
     "นอ": "น็่อบ",    # น็อก
     "นแอ": "นั่บ",    # นัก
     "นีแ": "เน็่บ",    # เน็ก
@@ -238,25 +238,25 @@ def lookup(key):
     tone = tones[(initial_class,
                  liveness(final, isLong(longmkr)),
                  "long" if isLong(longmkr) else "short")
-               ][tonekeys[tone]]
+                ][tonekeys[tone]]
     tone = tone.replace("น", "")
     
-    # if we find ต, transform accordingly
+    # ต = transform initial into low variant
     if "ต" in tone:
         tone = tone.replace("ต", "")
         initial = hlpair[initial]
         
-    # if we find ส, transform accordingly
+    # ส = transform initial into high variant
     if "ส" in tone:
         tone = tone.replace("ส", "")
         initial = lhpair[initial]
         
-    # if we find ห, add it accordingly
+    # ห = add a ห before the initial (orthography rule)
     if "ห" in tone:
         tone = tone.replace("ห", "")
         initial = "ห" + initial
     
-    # print("!b", initial,icluster,vowel,tone,final,fext)
+    print("!b", initial,icluster,vowel,tone,final,fext,shift)
     
     # Form final string
     if (vowel+final) in vf_overrides:
