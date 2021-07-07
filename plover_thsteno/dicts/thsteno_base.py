@@ -204,12 +204,14 @@ def lookup(key):
     # Tone                    สตขล
     # final                       มงวย
     # fext                            รฟ
-    match = re.fullmatch(r'([#มงปกพค]*)([รว]*)([ีู\*\-แอ]*)([สตข]*)(ล?)([มงวย]*)([รฟ]*)', stroke)
+    match = re.fullmatch(r'([มงปกพค]*)([รว]*)([ีูA\*#\-แอ]*)([สตข]*)(ล?)([มงวย]*)([รฟ]*)', stroke)
     (initial,icluster,vowel,tone,longmkr,final,fext) = match.groups()
-    vowel = vowel.replace("*","",1).replace("-","",1) # Remove *- from the vowel group
+    
+    shift = re.search("[\*#]+", vowel)       # Fetch "shift keys" (*, #)
+    vowel = re.sub("[\*#\-]+", "", vowel, 1) # Remove *-# from the vowel group
     vowel += longmkr
     
-    # print("!a", initial,icluster,vowel,tone,longmkr,final,fext)
+    print("!a", initial,icluster,vowel,tone,longmkr,final,fext,shift)
     
     # Make sure we have all the parts
     # The base dictionary handles non-syllable translations
@@ -266,15 +268,18 @@ def lookup(key):
     output = (output.replace("i", initial + icluster, 1)
                     .replace("f", final,              1)
                     .replace("t", tone,               1)
+                    + (fext or "")
+                    + (shift or "")
              )
     
     return output
     
 # Test
-# print(lookup(["กร*แอลมว"])) # กราบ
+# print(lookup(["กร*แอลมว"])) # กราบ*
 # print(lookup(["พค-แอม"])) # ทำ
 # print(lookup(["กคีแลมง"])) # เอน
 # print(lookup(["กูแอล"])) # กัว
 # print(lookup(["กแอว"])) # เกา
 # print(lookup(["มงแอตลมว"])) # หนาบ
 # print(lookup(["มงแอสขมง"])) # นั้น
+# print(lookup(["มงูสล"])) # นู่

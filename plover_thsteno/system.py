@@ -9,17 +9,16 @@
 # # # # #     # # # # #
 # ม ป พ ร  *  ส ข ม ว ร
 # ง ก ค ว     ต ล ง ย ฟ
-# 
-#      ี ู   แ อ
+#
+#       อี อู แ อ
 
 # Normalize key names (so the in-file format can be easier to render)
 def N(key): return key.replace("อ","")
 
 KEYS = (
-    '#',
     'ม-', 'ง-', 'ป-', 'ก-', 'พ-', 'ค-', 'ร-', 'ว-',
     N('อี-'), N('อู'),
-    'A', '*',
+    'A', '*', '#',
     '-แ', '-อ',
     '-ส', '-ข', '-ต', '-ล', '-ม', '-ง', '-ว', '-ย', '-ร', '-ฟ'
 )
@@ -251,4 +250,4 @@ KEYMAPS = {
 }
 
 DICTIONARIES_ROOT = 'asset:plover_thsteno:dicts'
-DEFAULT_DICTIONARIES = ('thsteno_main.json','thsteno_base.py')
+DEFAULT_DICTIONARIES = ('thsteno_main.json', 'thsteno_fingerspelling.py','thsteno_base.py')
