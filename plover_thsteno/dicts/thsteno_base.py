@@ -211,7 +211,7 @@ def lookup(key):
     vowel = re.sub("[\*#\-]+", "", vowel, 1) # Remove *-# from the vowel group
     vowel += longmkr
     
-    print("!a", initial,icluster,vowel,tone,longmkr,final,fext,shift)
+    # print("!a", initial,icluster,vowel,tone,longmkr,final,fext,shift)
     
     # Make sure we have all the parts
     # The base dictionary handles non-syllable translations
@@ -258,7 +258,7 @@ def lookup(key):
         tone = tone.replace("ห", "")
         initial = "ห" + initial
     
-    print("!b", initial,icluster,vowel,tone,final,fext,shift)
+    # print("!b", initial,icluster,vowel,tone,final,fext,shift)
     
     # Form final string
     if (vowel+final) in vf_overrides:
