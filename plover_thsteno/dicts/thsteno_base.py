@@ -231,7 +231,7 @@ def lookup(key):
     
     # Normalize high characters into low-paired
     initial_class = cons_class[icluster if initial=="" else initial]
-    if initial_class == "hi":
+    if initial_class == "high":
         initial = hlpair[initial]
         initial_class = "low_p"
     
