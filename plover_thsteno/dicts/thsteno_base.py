@@ -41,7 +41,7 @@ vowels_f = {
     "นูแอ": "น่วบ",   # นวก
     "นีูแ": "เนื่อบ",   # เนือก
     "นีูอ": "เนื่อบ",
-    "ล": "",       # Long vowel marker
+    # "ล": Long vowel marker
     "นีล": "นี่บ",     # นีก
     "นูล": "นู่บ",     # นูก
     "นีูล": "นื่บ",     # นืก
@@ -50,7 +50,7 @@ vowels_f = {
     "แอล": "น่าบ",  # นาก
     "นีแล": "เน่บ",   # เนก
     "นูอล": "โน่บ",   # โนก
-    "นีูแอล": "เน่อบ", # เนอก
+    "นีูแอล": "เนิ่บ",  # เนิก
     "นีแอล": "เนี่ยบ", # เนียก
     "นูแอล": "น่วบ",  # นวก
     "นีูแล": "เนื่อบ",  # เนือก
@@ -70,10 +70,10 @@ vowels_nf = {
     "นูแอ": "นั่วะ",  # นัวะ
     "นีูแ": "เนื่อะ",  # เนือะ
     "นีูอ": "เนื่อะ",
-    "ล": "",      # Long vowel marker
+    # "ล": Long vowel marker
     "นีล": "นี่",     # นี
     "นูล": "นู่",     # นู
-    "นีูล": "นื่",     # นื
+    "นีูล": "นื่อ",    # นือ
     "แล": "แน่",   # แน
     "อล": "น่อ",   # นอ
     "แอล": "น่า",  # นา
@@ -122,7 +122,7 @@ tones = {
     ("mid","live","long"): ['น', 'น่', 'น้', 'น๊', 'น๋'],
     ("mid","dead","short"): ['น', 'น', 'น้', 'น๊', 'น๋'],
     ("mid","dead","long"): ['น', 'น', 'น้', 'น๊', 'น๋'],
-    ("low_p","live","short"): ['น', 'ส่', 'น่', 'น้', 'ส'], # รวมต่ำคู่
+    ("low_p","live","short"): ['น', 'ส่', 'น่', 'น้', 'ส'], # ต่ำคู่/สูง
     ("low_p","live","long"): ['น', 'ส่', 'น่', 'น้', 'ส'],
     ("low_p","dead","short"): ['น', 'ส', 'น่', 'น', 'น๋'],
     ("low_p","dead","long"): ['น', 'ส', 'น', 'น้', 'น๋'],
@@ -156,7 +156,7 @@ def liveness(final, isLong):
     else:
         if final in "นมยวง": return "live"
         if final in "กบด":  return "dead"
-        raise KeyError("assert fail: Unrecognized final")
+        raise KeyError("Non-phonetic: Unrecognized final")
 
 def reformat_data_tables():
     # van Rossum is making all subroutine programmers sweat
@@ -206,17 +206,18 @@ def lookup(key):
     # fext                            รฟ
     match = re.fullmatch(r'([มงปกพค]*)([รว]*)([ีูA\*#\-แอ]*)([สตข]*)(ล?)([มงวย]*)([รฟ]*)', stroke)
     (initial,icluster,vowel,tone,longmkr,final,fext) = match.groups()
-    
+
+    # Normalize everything
     shift = re.search("[\*#]+", vowel)       # Fetch "shift keys" (*, #)
     vowel = re.sub("[\*#\-]+", "", vowel, 1) # Remove *-# from the vowel group
-    vowel += longmkr
-    
-    # print("!a", initial,icluster,vowel,tone,longmkr,final,fext,shift)
+    vowel += longmkr                         # Add long marker to vowel group
     
     # Make sure we have all the parts
     # The base dictionary handles non-syllable translations
-    if initial+icluster=="" or vowel=="": raise KeyError
-
+    if initial+icluster=="" or vowel=="" or vowel=="ล": raise KeyError("Non-phonetic: Does not have initial or vowel")
+    
+    # print("!a", initial,icluster,vowel,tone,longmkr,final,fext,shift)
+    
     # Translate the strokes
     initial  = translate(initial,  initials)
     icluster = translate(icluster, clusters)
