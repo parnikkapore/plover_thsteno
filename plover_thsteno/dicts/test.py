@@ -1,4 +1,4 @@
-#! /usr/bin/env python3 -i
+#! /usr/bin/env -S python3 -i
 # call tt() with the stroke to test the dictionary
 
 import thsteno_base as thbase
