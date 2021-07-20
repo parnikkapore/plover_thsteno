@@ -210,7 +210,7 @@ def lookup(key):
     shift = re.search(r'[\*#]+', vowel)                  # Fetch "shift keys" (*, #)
     shift = shift.group() if shift is not None else ""
     vowel = re.sub(r'[\*#\-]+', "", vowel, 1)            # Remove *-# from the vowel group
-    vowel += longmkr                                    # Add long marker to vowel group
+    vowel += longmkr                                     # Add long marker to vowel group
     
     # print("!a", initial,icluster,vowel,tone,final,fext,shift)
     
