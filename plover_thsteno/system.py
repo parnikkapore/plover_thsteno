@@ -17,7 +17,7 @@ def N(key): return key.replace("อ","")
 
 KEYS = (
     'ม-', 'ง-', 'ป-', 'ก-', 'พ-', 'ค-', 'ร-', 'ว-',
-    N('อี-'), N('อู'), 'A', '*', '#', '-แ', '-อ',
+    N('อี-'), N('อู-'), 'A', '*', '#', '-แ', '-อ',
     '-ส', '-ต', '-ข', '-ล',
     '-ม', '-ง', '-ว', '-ย', '-ร', '-ฟ'
 )
@@ -36,7 +36,7 @@ K = { # Mapping Extended Plover keys to system's key names
     'H-': 'ร-',
     'R-': 'ว-',
     'A' : N('อี-'),
-    'O' : N('อู'),
+    'O' : N('อู-'),
     '*1': 'A',
     '*2': '*',
     'E' : '-แ',
@@ -53,7 +53,7 @@ K = { # Mapping Extended Plover keys to system's key names
     '-Z': '-ฟ'
 }
 
-IMPLICIT_HYPHEN_KEYS = (N('อู'), N('อู'), '*', '-แ', '-อ', '5-', '0-')
+IMPLICIT_HYPHEN_KEYS = (N('อี-'), N('อู-'), '*', '-แ', '-อ')
 
 SUFFIX_KEYS = ()
 

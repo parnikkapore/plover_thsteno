@@ -104,12 +104,12 @@ vf_overrides = { # Exceptions for some irregularly written stuff
 tonekeys = {
     "": 0,
     "ส": 2,
-    "ข": 3,
+#   "ข": 3,
     "ต": 1,
     "สข": 3,
     "ตข": 4,
-    "สต": 0,
-    "สตข": 3
+#   "สต": 0,
+#   "สตข": 3
 }
 # อ - 0
 # อ่ ต 1
@@ -156,7 +156,7 @@ def liveness(final, isLong):
     else:
         if final in "นมยวง": return "live"
         if final in "กบด":  return "dead"
-        raise KeyError("Non-phonetic: Unrecognized final")
+        return "live"
 
 def reformat_data_tables():
     # van Rossum is making all subroutine programmers sweat
@@ -170,12 +170,11 @@ def reformat_data_tables():
     vf_overrides = { k.replace("น","i"): normalize(v) for (k,v) in vf_overrides.items()}
 reformat_data_tables()
 
-def translate(key, arr):
+def translate(key, arr, fallback=None):
     if key == '':
         return ''
     elif key not in arr:
-        #raise KeyError # Combination does not follow base theory and is a brief
-        return key
+        return fallback or key
     else:
         return arr[key]
         
@@ -208,15 +207,12 @@ def lookup(key):
     (initial,icluster,vowel,tone,longmkr,final,fext) = match.groups()
 
     # Normalize everything
-    shift = re.search("[\*#]+", vowel)       # Fetch "shift keys" (*, #)
-    vowel = re.sub("[\*#\-]+", "", vowel, 1) # Remove *-# from the vowel group
-    vowel += longmkr                         # Add long marker to vowel group
+    shift = re.search(r'[\*#]+', vowel)                  # Fetch "shift keys" (*, #)
+    shift = shift.group() if shift is not None else ""
+    vowel = re.sub(r'[\*#\-]+', "", vowel, 1)            # Remove *-# from the vowel group
+    vowel += longmkr                                    # Add long marker to vowel group
     
-    # Make sure we have all the parts
-    # The base dictionary handles non-syllable translations
-    if initial+icluster=="" or vowel=="" or vowel=="ล": raise KeyError("Non-phonetic: Does not have initial or vowel")
-    
-    # print("!a", initial,icluster,vowel,tone,longmkr,final,fext,shift)
+    # print("!a", initial,icluster,vowel,tone,final,fext,shift)
     
     # Translate the strokes
     initial  = translate(initial,  initials)
@@ -225,23 +221,30 @@ def lookup(key):
     fext     = fext # This zone has no fixed meaning
     
     # Translate vowel (form depends on if a final exists)
-    if (final) == "":
-        vowel = translate(vowel, vowels_nf)
-    else:
-        vowel = translate(vowel, vowels_f)
+    if vowel=="" or vowel=="ล": # No vowel
+        vowel = f"it-{vowel}f"
+    elif (final) == "":         # Has vowel, no final
+        vowel = translate(vowel, vowels_nf, f"it{vowel}")
+    else:                       # Has vowel, has final
+        vowel = translate(vowel, vowels_f, f"it{vowel}f")
     
     # Normalize high characters into low-paired
-    initial_class = cons_class[icluster if initial=="" else initial]
+    initial_class = translate((initial+icluster)[0:1], cons_class, "mid")
     if initial_class == "high":
         initial = hlpair[initial]
         initial_class = "low_p"
     
     # determine tone mark
     
-    tone = tones[(initial_class,
-                 liveness(final, isLong(longmkr)),
-                 "long" if isLong(longmkr) else "short")
-                ][tonekeys[tone]]
+    if tone in tonekeys:
+        tone = tones[(initial_class,
+                      liveness(final, isLong(longmkr)),
+                      "long" if isLong(longmkr) else "short")
+                    ][tonekeys[tone]]
+    else:
+        final = tone + final # Print the invalid tone strokes before the final
+        tone = ""
+    
     tone = tone.replace("น", "")
     
     # ต = transform initial into low variant
@@ -261,7 +264,7 @@ def lookup(key):
     
     # print("!b", initial,icluster,vowel,tone,final,fext,shift)
     
-    # Form final string
+    # Form output string
     if (vowel+final) in vf_overrides:
         output = vf_overrides[vowel+final]
     else:
@@ -284,3 +287,4 @@ def lookup(key):
 # print(lookup(["มงแอตลมว"])) # หนาบ
 # print(lookup(["มงแอสขมง"])) # นั้น
 # print(lookup(["มงูสล"])) # นู่
+# print(lookup(["พคแอสตมว"])) # ทัสตบ
